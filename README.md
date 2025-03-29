@@ -129,23 +129,39 @@ subset = ds["streamflow"].sel(time="2018").isel(feature_id=1).plot()
 ```
 
 Python (download netcdf)
-Use the Zarr file for cloud workflows. But if you want to download one year's netcdf use this.
+Use the Zarr file for cloud workflows. But if you want to download one year's netcdf use this. 
 ```
 import xarray as xr
 import urllib.request
 url = "https://storage.googleapis.com/nmfs_odp_nwfsc/CB/nwm_daily_means/wr18/streamflow/netcdf/daily_mean_2018.nc"
-local_path = "daily_mean_2018.nc"
-urllib.request.urlretrieve(url, local_path)
-ds = xr.open_dataset(local_path)
+urllib.request.urlretrieve(url, "daily_mean_2018.nc")
+ds = xr.open_dataset("daily_mean_2018.nc")
+ds["streamflow"].isel(feature_id=1).plot()
+```
+
+Python (stream netcdf, no download)
+```
+import xarray as xr
+import fsspec
+url = "gcs://nmfs_odp_nwfsc/CB/nwm_daily_means/wr18/streamflow/netcdf/daily_mean_2018.nc"
+fs = fsspec.filesystem("gcs", anon=True)
+f = fs.open(url, mode="rb")  # open the remote file
+ds = xr.open_dataset(f)
+ds["streamflow"].isel(feature_id=1).plot()
+f.close() # close when done
 ```
 
 R (does not allow accessing data in the cloud!)
-You have to download the files. Ack.
+You have to download the files. See example at bottom for prettier plotting and processing time.
 ```
 library(ncdf4)
 url <- "https://storage.googleapis.com/nmfs_odp_nwfsc/CB/nwm_daily_means/wr18/streamflow/netcdf/daily_mean_2018.nc"
 download.file(url, "daily_mean_2018.nc", mode = "wb")
 nc <- nc_open("daily_mean_2018.nc")
+time <- ncvar_get(nc, "time")
+streamflow <- ncvar_get(nc, "streamflow")[1,]  # all time steps, first feature_id
+plot(time, streamflow, type="l")
+nc_close(nc)
 ```
 
 ---
@@ -170,3 +186,44 @@ nc <- nc_open("daily_mean_2018.nc")
 **Eli Holmes**  
 NOAA Fisheries  
 eli.holmes@noaa.gov
+
+----
+
+## Example of a plot in R
+
+```
+library(ncdf4)
+library(ggplot2)
+
+# Get file via download
+url <- "https://storage.googleapis.com/nmfs_odp_nwfsc/CB/nwm_daily_means/wr18/streamflow/netcdf/daily_mean_2018.nc"
+download.file(url, "daily_mean_2018.nc", mode = "wb")
+
+# Open the file
+nc <- ncdf4::nc_open("daily_mean_2018.nc")
+
+# Read the time variable
+time_raw <- ncvar_get(nc, "time")
+time_units <- ncatt_get(nc, "time", "units")$value
+time_origin <- sub("days since ", "", time_units)
+time <- as.Date(time_raw, origin = time_origin)
+
+# Read streamflow for one feature_id (e.g., index 1)
+feature_id <- ncvar_get(nc, "feature_id")
+fid <- 344103
+fid_col <- which(feature_id == fid)
+streamflow <- ncvar_get(nc, "streamflow")[fid_col,]  # all time steps, first feature_id
+
+# Close NetCDF file
+nc_close(nc)
+
+# Create data frame
+df <- data.frame(time = time, streamflow = streamflow)
+
+# Plot
+ggplot(df, aes(x = time, y = streamflow)) +
+  geom_line(color = "steelblue") +
+  labs(title = "Daily Mean Streamflow (Feature ID 1)",
+       x = "Date", y = "Streamflow (m³/s)") +
+  theme_minimal()
+```
