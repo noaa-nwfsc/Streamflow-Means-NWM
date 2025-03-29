@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NOAA WR18 Streamflow Dataset</title>
+  <link rel="stylesheet" href="https://assets.opendata.aws/css/bootstrap/3.4.1/bootstrap.min.css">
+  <style>
+    body { padding-top: 60px; font-family: sans-serif; }
+    .container { max-width: 960px; }
+    h1 { margin-bottom: 20px; }
+    .tag { display: inline-block; margin-right: 5px; background: #d9edf7; padding: 4px 8px; border-radius: 4px; }
+    footer { margin-top: 40px; font-size: 0.9em; color: #666; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>NOAA Water Resource Region 18 (WR18) Streamflow Data</h1>
+
+    <p>
+      <span class="tag">hydrology</span>
+      <span class="tag">streamflow</span>
+      <span class="tag">NOAA</span>
+      <span class="tag">Zarr</span>
+      <span class="tag">NetCDF</span>
+      <span class="tag">open data</span>
+    </p>
+
+    <h3>Description</h3>
+    <p>
+      This dataset contains daily mean streamflow data derived from the hourly
+      output of the <strong>NOAA National Water Model v3.0</strong> for Water Resource Region 18 (WR18),
+      which includes most of California and portions of Nevada.
+    </p>
+
+    <p>
+      The data has been spatially subset using NHDPlusV2.1 flowlines
+      (COMIDs) and temporally aggregated from hourly to daily means.
+    </p>
+
+    <h4>Storage Location</h4>
+    <p>
+      Google Cloud Storage Bucket: <br>
+      <a href="https://console.cloud.google.com/storage/browser/nmfs_odp_nwfsc/CB/nwm_daily_means" target="_blank">
+        gs://nmfs_odp_nwfsc/CB/nwm_daily_means
+      </a>
+    </p>
+
+    <h4>Browse Directory</h4>
+    <ul>
+      <li><a href="https://storage.googleapis.com/nmfs_odp_nwfsc/CB/nwm_daily_means/metadata/" target="_blank">Metadata (Parquet, JSON)</a></li>
+      <li><a href="https://storage.googleapis.com/nmfs_odp_nwfsc/CB/nwm_daily_means/netcdf/" target="_blank">NetCDF Files</a></li>
+      <li><a href="https://storage.googleapis.com/nmfs_odp_nwfsc/CB/nwm_daily_means/zarr/" target="_blank">Zarr Archive</a></li>
+    </ul>
+
+    <h4>License</h4>
+    <p>
+      <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal Public Domain Dedication</a>
+    </p>
+
+    <h4>Documentation</h4>
+    <p>
+      See the GitHub repository for data generation code and notebooks:<br>
+      <a href="https://github.com/noaa-nwfsc/Streamflow-Means-NWM" target="_blank">https://github.com/noaa-nwfsc/Streamflow-Means-NWM</a>
+    </p>
+
+    <h4>Contact</h4>
+    <p>
+      <strong>Eli Holmes</strong> – NOAA Fisheries<br>
+      <code>eli.holmes@noaa.gov</code>
+    </p>
+
+    <footer>
+      NOAA Fisheries &middot; Data curated and processed from NOAA NWM v3.0 (1979–2023)
+    </footer>
+  </div>
+</body>
+</html>
