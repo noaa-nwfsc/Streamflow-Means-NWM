@@ -1,78 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
   <title>NOAA WR18 Streamflow Dataset</title>
-  <link rel="stylesheet" href="https://assets.opendata.aws/css/bootstrap/3.4.1/bootstrap.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body { padding-top: 60px; font-family: sans-serif; }
-    .container { max-width: 960px; }
-    h1 { margin-bottom: 20px; }
-    .tag { display: inline-block; margin-right: 5px; background: #d9edf7; padding: 4px 8px; border-radius: 4px; }
-    footer { margin-top: 40px; font-size: 0.9em; color: #666; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem;
+      line-height: 1.6;
+      background-color: #fff;
+      color: #1a1a1a;
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .badges .badge {
+      display: inline-block;
+      background-color: #2b7bb9;
+      color: #fff;
+      padding: 0.3rem 0.7rem;
+      margin: 0.2rem;
+      border-radius: 5px;
+      font-size: 0.8rem;
+    }
+
+    .columns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .column {
+      flex: 1 1 48%;
+      min-width: 300px;
+    }
+
+    code {
+      background: #f4f4f4;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+
+    a {
+      color: #2b7bb9;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      color: #555;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>NOAA Water Resource Region 18 (WR18) Streamflow Data</h1>
 
-    <p>
-      <span class="tag">hydrology</span>
-      <span class="tag">streamflow</span>
-      <span class="tag">NOAA</span>
-      <span class="tag">Zarr</span>
-      <span class="tag">NetCDF</span>
-      <span class="tag">open data</span>
-    </p>
+  <h1>NOAA WR18 Streamflow Dataset</h1>
 
-    <h3>Description</h3>
-    <p>
-      This dataset contains daily mean streamflow data derived from the hourly
-      output of the <strong>NOAA National Water Model v3.0</strong> for Water Resource Region 18 (WR18),
-      which includes most of California and portions of Nevada.
-    </p>
-
-    <p>
-      The data has been spatially subset using NHDPlusV2.1 flowlines
-      (COMIDs) and temporally aggregated from hourly to daily means.
-    </p>
-
-    <h4>Storage Location</h4>
-    <p>
-      Google Cloud Storage Bucket: <br>
-      <a href="https://console.cloud.google.com/storage/browser/nmfs_odp_nwfsc/CB/nwm_daily_means" target="_blank">
-        gs://nmfs_odp_nwfsc/CB/nwm_daily_means
-      </a>
-    </p>
-
-    <h4>Browse Directory</h4>
-    <ul>
-      <li><a href="https://storage.googleapis.com/nmfs_odp_nwfsc/CB/nwm_daily_means/metadata/" target="_blank">Metadata (Parquet, JSON)</a></li>
-      <li><a href="https://storage.googleapis.com/nmfs_odp_nwfsc/CB/nwm_daily_means/netcdf/" target="_blank">NetCDF Files</a></li>
-      <li><a href="https://storage.googleapis.com/nmfs_odp_nwfsc/CB/nwm_daily_means/zarr/" target="_blank">Zarr Archive</a></li>
-    </ul>
-
-    <h4>License</h4>
-    <p>
-      <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal Public Domain Dedication</a>
-    </p>
-
-    <h4>Documentation</h4>
-    <p>
-      See the GitHub repository for data generation code and notebooks:<br>
-      <a href="https://github.com/noaa-nwfsc/Streamflow-Means-NWM" target="_blank">https://github.com/noaa-nwfsc/Streamflow-Means-NWM</a>
-    </p>
-
-    <h4>Contact</h4>
-    <p>
-      <strong>Eli Holmes</strong> – NOAA Fisheries<br>
-      <code>eli.holmes@noaa.gov</code>
-    </p>
-
-    <footer>
-      NOAA Fisheries &middot; Data curated and processed from NOAA NWM v3.0 (1979–2023)
-    </footer>
+  <div class="badges">
+    <span class="badge">hydrology</span>
+    <span class="badge">climate</span>
+    <span class="badge">streamflow</span>
+    <span class="badge">NOAA</span>
+    <span class="badge">NWM</span>
   </div>
+
+  <div class="columns">
+    <div class="column">
+      <h2>Description</h2>
+      <p>This dataset provides <strong>daily mean streamflow</strong> derived from the NOAA National Water Model v3.0 retrospective archive for <strong>Water Resource Region 18 (WR18)</strong>, covering California and parts of Nevada.</p>
+
+      <p>Hourly streamflow was processed using Python and Xarray. Only NHDPlus COMID features marked as <code>StreamRiver</code> were retained. Daily means were calculated, and geospatial metadata is provided in GeoParquet and Parquet formats.</p>
+
+      <ul>
+        <li>⚡️ Daily streamflow: NetCDF and Zarr</li>
+        <li>📍 COMID metadata and geometry: Parquet & GeoParquet</li>
+        <li>🧪 Sample notebooks for usage</li>
+      </ul>
+    </div>
+
+    <div class="column">
+      <h2>Resources on Google Cloud</h2>
+      <p><strong>Bucket:</strong><br/>
+      <code>gs://nmfs_odp_nwfsc/CB/nwm_daily_means</code></p>
+
+      <p><strong>Access:</strong> Public / no authentication required</p>
+
+      <p><strong>Browse folders:</strong></p>
+      <ul>
+        <li><a href="https://console.cloud.google.com/storage/browser/nmfs_odp_nwfsc/CB/nwm_daily_means/netcdf">🗂 NetCDF files by year</a></li>
+        <li><a href="https://console.cloud.google.com/storage/browser/nmfs_odp_nwfsc/CB/nwm_daily_means/zarr">🌀 Zarr format (cloud optimized)</a></li>
+        <li><a href="https://console.cloud.google.com/storage/browser/nmfs_odp_nwfsc/CB/nwm_daily_means/metadata">📑 Metadata and flowlines</a></li>
+      </ul>
+
+      <p><strong>Region:</strong> <code>us-west1</code></p>
+    </div>
+  </div>
+
+  <footer>
+    <p>Created by Eli Holmes, NOAA Fisheries. Based on data from <a href="https://registry.opendata.aws/nwm-archive/">NOAA NWM v3.0</a> and <a href="https://www.epa.gov/waterdata/nhdplus-national-hydrography-dataset-plus">EPA NHDPlusV2.1</a>. Licensed under <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a>.</p>
+  </footer>
+
 </body>
 </html>
+
