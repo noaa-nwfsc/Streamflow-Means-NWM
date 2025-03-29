@@ -57,6 +57,7 @@ This dataset contains daily streamflow data and associated hydrologic features f
 Python (need to download)
 ```
 import urllib.request
+import geopandas as gpd
 url = "https://storage.googleapis.com/nmfs_odp_nwfsc/CB/nwm_daily_means/wr18/flowline/WR_18_Flowline.parquet"
 local_path = "WR_18_Flowline.parquet"
 urllib.request.urlretrieve(url, local_path)
