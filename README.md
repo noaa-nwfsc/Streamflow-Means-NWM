@@ -119,6 +119,35 @@ ggplot(st_geometry(gdf)) +
 
 - **Output Formats**: NetCDF and Zarr
 
+Python (Zarr)
+```
+import xarray as xr
+
+zarr_url = "gcs://nmfs_odp_nwfsc/CB/nwm_daily_means/zarr"
+ds = xr.open_zarr(zarr_url, consolidated=True)
+subset = ds["streamflow"].sel(time="2018").isel(feature_id=1).plot()
+```
+
+Python (download netcdf)
+Use the Zarr file for cloud workflows. But if you want to download one year's netcdf use this.
+```
+import xarray as xr
+import urllib.request
+url = "https://storage.googleapis.com/nmfs_odp_nwfsc/CB/nwm_daily_means/netcdf/daily_mean_2018.nc"
+local_path = "daily_mean_2018.nc"
+urllib.request.urlretrieve(url, local_path)
+ds = xr.open_dataset(local_path)
+```
+
+R (does not allow accessing data in the cloud!)
+You have to download the files. Ack.
+```
+library(ncdf4)
+url <- "https://storage.googleapis.com/nmfs_odp_nwfsc/CB/nwm_daily_means/netcdf/daily_mean_2018.nc"
+download.file(url, "daily_mean_2018.nc", mode = "wb")
+nc <- nc_open("daily_mean_2018.nc")
+```
+
 ---
 
 ## Storage Details
