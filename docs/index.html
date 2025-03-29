@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>NOAA WR18 Streamflow Dataset</title>
+  <title>NOAA WR18 Daily Mean Streamflow Dataset</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
@@ -81,15 +81,59 @@
   <div class="columns">
     <div class="column">
       <h2>Description</h2>
-      <p>This dataset provides <strong>daily mean streamflow</strong> derived from the NOAA National Water Model v3.0 retrospective archive for <strong>Water Resource Region 18 (WR18)</strong>, covering California and parts of Nevada.</p>
+      <p>This dataset provides daily mean streamflow (m3/s) 1979-2023 derived from the NOAA National Water Model v3.0 retrospective archive for Water Resource Region 18 (WR18), covering California and parts of Nevada.</p>
 
-      <p>Hourly streamflow was processed using Python and Xarray. Only NHDPlus COMID features marked as <code>StreamRiver</code> were retained. Daily means were calculated, and geospatial metadata is provided in GeoParquet and Parquet formats.</p>
+      <p>Hourly streamflow was processed using Python and xarray. Only NHDPlus COMID features marked as <code>StreamRiver</code> were retained. Daily means were calculated, and geospatial metadata is provided in GeoParquet and Parquet formats.</p>
 
       <ul>
-        <li>⚡️ Daily streamflow: NetCDF and Zarr</li>
-        <li>📍 COMID metadata and geometry: Parquet & GeoParquet</li>
-        <li>🧪 Sample notebooks for usage</li>
+        <li>Mean daily streamflow: NetCDF and Zarr</li>
+        <li>COMID metadata and geometry: Parquet & GeoParquet</li>
+        <li><a href="https://github.com/noaa-nwfsc/Streamflow-Means-NWM/tree/main/notebooks">Sample notebooks for usage</a></li>
       </ul>
+
+      <p>Example use. See more at <a href="https://github.com/noaa-nwfsc/Streamflow-Means-NWM/blob/main/README.md">README</a></p>
+
+Python (stream Zarr)
+    <pre>
+import xarray as xr
+zarr_url = "gcs://nmfs_odp_nwfsc/CB/nwm_daily_means/wr18/streamflow/zarr"
+ds = xr.open_zarr(zarr_url, consolidated=True)
+ds["streamflow"].sel(time="2018").isel(feature_id=1).plot()
+    </pre>
+
+Python (stream netcdf)
+    <pre>
+import xarray as xr
+import fsspec
+url = "gcs://nmfs_odp_nwfsc/CB/nwm_daily_means/wr18/streamflow/netcdf/daily_mean_2018.nc"
+fs = fsspec.filesystem("gcs", anon=True)
+f = fs.open(url, mode="rb")
+ds = xr.open_dataset(f)
+ds["streamflow"].isel(feature_id=1).plot()
+f.close()
+    </pre>
+
+Python (download netcdf)
+    <pre>
+import xarray as xr
+import urllib.request
+url = "https://storage.googleapis.com/nmfs_odp_nwfsc/CB/nwm_daily_means/wr18/streamflow/netcdf/daily_mean_2018.nc"
+urllib.request.urlretrieve(url, "daily_mean_2018.nc")
+ds = xr.open_dataset("daily_mean_2018.nc")
+ds["streamflow"].isel(feature_id=1).plot()
+    </pre>
+
+R does not allow streaming data from the cloud. 
+    <pre>
+library(ncdf4)
+url <- "https://storage.googleapis.com/nmfs_odp_nwfsc/CB/nwm_daily_means/wr18/streamflow/netcdf/daily_mean_2018.nc"
+download.file(url, "daily_mean_2018.nc", mode = "wb")
+nc <- nc_open("daily_mean_2018.nc")
+time <- ncvar_get(nc, "time")
+streamflow <- ncvar_get(nc, "streamflow")[1,]
+plot(time, streamflow)
+        </pre>
+
     </div>
 
     <div class="column">
@@ -101,9 +145,11 @@
 
       <p><strong>Browse folders:</strong></p>
       <ul>
-        <li><a href="https://console.cloud.google.com/storage/browser/nmfs_odp_nwfsc/CB/nwm_daily_means/netcdf">🗂 NetCDF files by year</a></li>
-        <li><a href="https://console.cloud.google.com/storage/browser/nmfs_odp_nwfsc/CB/nwm_daily_means/zarr">🌀 Zarr format (cloud optimized)</a></li>
-        <li><a href="https://console.cloud.google.com/storage/browser/nmfs_odp_nwfsc/CB/nwm_daily_means/metadata">📑 Metadata and flowlines</a></li>
+        <li><a href="https://console.cloud.google.com/storage/browser/nmfs_odp_nwfsc/CB/nwm_daily_means/wr18/streamflow/netcdf">NetCDF files by year</a></li>
+        <li><a href="https://console.cloud.google.com/storage/browser/nmfs_odp_nwfsc/CB/nwm_daily_means/wr18/streamflow/zarr">Zarr format (cloud optimized)</a></li>
+        <li><a href="https://console.cloud.google.com/storage/browser/nmfs_odp_nwfsc/CB/nwm_daily_means/wr18/metadata">📑Metadata</a></li>
+        <li><a href="https://console.cloud.google.com/storage/browser/nmfs_odp_nwfsc/CB/nwm_daily_means/wr18/flowline">Flowlines parquet files</a></li>
+        <li><a href="https://console.cloud.google.com/storage/browser/nmfs_odp_nwfsc/CB/nwm_daily_means/wr18/notebooks">Sample notebooks</a></li>
       </ul>
 
       <p><strong>Region:</strong> <code>us-west1</code></p>
@@ -111,7 +157,7 @@
   </div>
 
   <footer>
-    <p>Created by Eli Holmes, NOAA Fisheries. Based on data from <a href="https://registry.opendata.aws/nwm-archive/">NOAA NWM v3.0</a> and <a href="https://www.epa.gov/waterdata/nhdplus-national-hydrography-dataset-plus">EPA NHDPlusV2.1</a>. Licensed under <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a>.</p>
+    <p>Based on data from <a href="https://registry.opendata.aws/nwm-archive/">NOAA NWM v3.0</a> and <a href="https://www.epa.gov/waterdata/nhdplus-national-hydrography-dataset-plus">EPA NHDPlusV2.1</a>. Licensed under <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a>.</p>
   </footer>
 
 </body>
