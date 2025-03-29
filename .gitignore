@@ -3,3 +3,6 @@ WR_18_NHD.*
 *ind-files*
 *.nc
 *.R
+HUC2-18/
+netcdf/
+flowline/
