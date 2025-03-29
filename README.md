@@ -52,6 +52,23 @@ This dataset contains daily streamflow data and associated hydrologic features f
 - **Download URL**: [EPA NHDPlus VPU 18](https://www.epa.gov/waterdata/nhdplus-california-data-vector-processing-unit-18)  
 - **Original File**: `NHDPlusV21_CA_18_NHDSnapshot_05.7z`  
 - **Processed Output**: `WR_18_Flowline.parquet`
+- **Read in**:
+Python
+```
+import geopandas as gpd
+gdf = gpd.read_parquet("WR_18_Flowline.parquet")
+gdf.plot()
+```
+
+R
+```
+library(arrow)
+library(sf)
+tbl <- read_parquet("WR_18_Flowline.parquet")
+gdf <- st_as_sf(tbl, wkb = "geometry")
+plot(gdf)
+```
+
 
 ### Flowline Attributes Summary
 
