@@ -17,6 +17,11 @@ This dataset contains daily streamflow data and associated hydrologic features f
 
 This repo contains the files and instructions for creating the Google Cloud Data here [CB/wr18](https://console.cloud.google.com/storage/browser/nmfs_odp_nwfsc/CB/nwm_daily_means/wr18?pageState=(%22StorageObjectListTable%22:(%22f%22:%22%255B%255D%22))&invt=AbtSUA&project=noaa-gcs-public-data) for mean daily streamflow 1979-2023 for all of California. See the `notebooks` directory for how the files were created.
 
+### Author
+
+**Eli Holmes**, NOAA Fisheries, eli.holmes@noaa.gov
+
+
 ### Google Cloud Bucket structure
 
 The `flowline` and `streamflow` files are not in this GitHub repo (they are big). You will find them in the Google Cloud Bucket.
@@ -46,8 +51,7 @@ bucket/
 ```
 
 - **Storage Format**: NetCDF and Zarr  
-- **Cloud Storage**: AWS S3  
-- **Region**: `us-east-1`  
+- **Cloud Storage**: Google Cloud Bucket on [NOAA NODD](https://www.noaa.gov/nodd/datasets#NMFS)
 - **Access**: Public, anonymous
 
 
@@ -67,18 +71,21 @@ Use the Zarr file for cloud workflows. But if you want to download one year's ne
 import xarray as xr
 import urllib.request
 url = "https://storage.googleapis.com/nmfs_odp_nwfsc/CB/nwm_daily_means/netcdf/daily_mean_2018.nc"
-local_path = "daily_mean_2018.nc"
-urllib.request.urlretrieve(url, local_path)
-ds = xr.open_dataset(local_path)
+urllib.request.urlretrieve(url, "daily_mean_2018.nc")
+ds = xr.open_dataset("daily_mean_2018.nc")
+ds["streamflow"].isel(feature_id=1).plot()
 ```
 
 R (does not allow accessing data in the cloud!)
-You have to download the files. Ack.
+You have to download the files. See below for a nicer plotting example.
 ```
 library(ncdf4)
 url <- "https://storage.googleapis.com/nmfs_odp_nwfsc/CB/nwm_daily_means/netcdf/daily_mean_2018.nc"
 download.file(url, "daily_mean_2018.nc", mode = "wb")
 nc <- nc_open("daily_mean_2018.nc")
+time <- ncvar_get(nc, "time")
+streamflow <- ncvar_get(nc, "streamflow")[1,]
+plot(time, streamflow)
 ```
 
 ### Source of hourly streamflow data
@@ -207,17 +214,3 @@ ggplot(df, aes(x = time, y = streamflow)) +
        x = "Date", y = "Streamflow (m³/s)") +
   theme_minimal()
 ```
-
----
-
-## Processing Date
-
-**March 28, 2025**
-
----
-
-## Author
-
-**Eli Holmes**  
-NOAA Fisheries  
-eli.holmes@noaa.gov
