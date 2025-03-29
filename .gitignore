@@ -3,7 +3,8 @@ WR_18_NHD.*
 *ind-files*
 *.nc
 *.R
-HUC2-18/
+HUC2-18/NHDFlowline.*
 netcdf/
-flowline/
+flowline/WR_18_Flowline.parquet
 test.R
+metadata/*.parquet
