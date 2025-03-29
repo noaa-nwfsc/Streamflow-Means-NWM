@@ -19,7 +19,8 @@ This repo contains the files and instructions for creating the Google Cloud Data
 
 ### Author
 
-**Eli Holmes**, NOAA Fisheries, eli.holmes@noaa.gov
+Science, goals and data: **Morgan Bond**, NOAA Fisheries
+Coding: **Eli Holmes**, NOAA Fisheries
 
 
 ### Google Cloud Bucket structure
