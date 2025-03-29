@@ -53,20 +53,37 @@ This dataset contains daily streamflow data and associated hydrologic features f
 - **Original File**: `NHDPlusV21_CA_18_NHDSnapshot_05.7z`  
 - **Processed Output**: `WR_18_Flowline.parquet`
 - **Read in**:
-Python
+
+Python (need to download)
 ```
-import geopandas as gpd
+import urllib.request
+url = "https://storage.googleapis.com/nmfs_odp_nwfsc/CB/nwm_daily_means/wr18/flowline/WR_18_Flowline.parquet"
+local_path = "WR_18_Flowline.parquet"
+urllib.request.urlretrieve(url, local_path)
 gdf = gpd.read_parquet("WR_18_Flowline.parquet")
+gdf = gdf[gdf["HUC4"] == "1810"]  # optional filter
 gdf.plot()
 ```
 
-R
+R (can read from url but need to monkey with geometry)
 ```
 library(arrow)
 library(sf)
-tbl <- read_parquet("WR_18_Flowline.parquet")
-gdf <- st_as_sf(tbl, wkb = "geometry")
-plot(gdf)
+library(ggplot2)
+
+url <- "https://storage.googleapis.com/nmfs_odp_nwfsc/CB/nwm_daily_means/wr18/flowline/WR_18_Flowline.parquet"
+df <- as.data.frame(read_parquet(url))
+df_small <- subset(df, HUC4 == "1810")
+
+# Build sf object
+geom <- st_as_sfc(df_small$geometry, EWKB = TRUE)
+df_small$geometry <- NULL
+gdf <- st_sf(df_small, geometry = geom)
+
+# Plot just the geometry
+ggplot(st_geometry(gdf)) +
+  geom_sf(color = "steelblue", size = 0.3) +
+  theme_minimal()
 ```
 
 
