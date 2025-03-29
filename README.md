@@ -15,7 +15,7 @@ This dataset contains daily streamflow data and associated hydrologic features f
 
 ## Package documentation
 
-This repo contains the files and instructions for creating the Google Cloud Data here [CB/wr18](https://console.cloud.google.com/storage/browser/nmfs_odp_nwfsc/CB/nwm_daily_means/wr18?pageState=(%22StorageObjectListTable%22:(%22f%22:%22%255B%255D%22))&invt=AbtSUA&project=noaa-gcs-public-data) for mean daily streamflow 1979-2023 for all of California. See the `notebooks` directory for how the files were created.
+This repo contains the files and instructions for creating the Google Cloud Data here [CB/wr18](https://console.cloud.google.com/storage/browser/nmfs_odp_nwfsc/CB/nwm_daily_means/wr18?pageState=(%22StorageObjectListTable%22:(%22f%22:%22%255B%255D%22))&invt=AbtSUA&project=noaa-gcs-public-data) for mean daily streamflow 1979-2023 for all of California. See the `notebooks` directory for how the files were created. To see a simplified version of the steps, run `notebooks/tutorial.ipynb`.
 
 ### Author
 
