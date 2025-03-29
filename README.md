@@ -159,21 +159,6 @@ ggplot(st_geometry(gdf)) +
   geom_sf(color = "steelblue", size = 0.3) +
   theme_minimal()
 ```
-
----
-
-## Processing Date
-
-**March 28, 2025**
-
----
-
-## Author
-
-**Eli Holmes**  
-NOAA Fisheries  
-eli.holmes@noaa.gov
-
 ----
 
 ## Example of a plot in R
