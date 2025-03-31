@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>NOAA WR18 Daily Mean Streamflow Dataset</title>
+  <title>NOAA WR1718 Daily Mean Streamflow Dataset</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
@@ -68,7 +68,7 @@
 </head>
 <body>
 
-  <h1>NOAA WR18 Daily Mean Streamflow Dataset</h1>
+  <h1>NOAA WR17+18 Daily Mean Streamflow Dataset</h1>
 
   <div class="badges">
     <span class="badge">hydrology</span>
@@ -81,13 +81,13 @@
   <div class="columns">
     <div class="column">
       <h2>Description</h2>
-      <p>This dataset provides daily mean streamflow (m3/s) 1979-2023 derived from the NOAA National Water Model v3.0 retrospective archive for Water Resource Region 18 (WR18), covering California and parts of Nevada.</p>
+      <p>This dataset provides daily mean streamflow (m3/s) 1979-2023 derived from the NOAA National Water Model v3.0 retrospective archive for Water Resource Region 17 and 18 (West Coast), covering California, Oregon, Washington and Idaho.</p>
 
       <p>Hourly streamflow was processed using Python and xarray. Only NHDPlus COMID features marked as <code>StreamRiver</code> were retained. Daily means were calculated, and geospatial metadata is provided in GeoParquet and Parquet formats.</p>
 
 <div style="float: right; margin: 0 0 1em 1em;">
-  <a href="wr18_map.png" target="_blank">
-    <img src="wr18_map_thumb.png" alt="WR18 Map" style="width: 150px; border: 1px solid #ccc;">
+  <a href="wr1718_map.png" target="_blank">
+    <img src="wr1718_map_thumb.png" alt="WR1718 Map" style="width: 150px; border: 1px solid #ccc;">
   </a>
   <div style="font-size: 0.8em; color: #555;">Click for full-size image</div>
 </div>      
@@ -104,7 +104,7 @@
 Python (stream Zarr)
     <pre>
 import xarray as xr
-zarr_url = "gcs://nmfs_odp_nwfsc/CB/nwm_daily_means/wr18/streamflow/zarr"
+zarr_url = "gcs://nmfs_odp_nwfsc/CB/nwm_daily_means/wr1718/streamflow/zarr"
 ds = xr.open_zarr(zarr_url, consolidated=True)
 ds["streamflow"].sel(time="2018").isel(feature_id=1).plot()
     </pre>
@@ -113,7 +113,7 @@ Python (stream netcdf)
     <pre>
 import xarray as xr
 import fsspec
-url = "gcs://nmfs_odp_nwfsc/CB/nwm_daily_means/wr18/streamflow/netcdf/daily_mean_2018.nc"
+url = "gcs://nmfs_odp_nwfsc/CB/nwm_daily_means/wr1718/streamflow/netcdf/daily_mean_2018.nc"
 fs = fsspec.filesystem("gcs", anon=True)
 f = fs.open(url, mode="rb")
 ds = xr.open_dataset(f)
@@ -125,7 +125,7 @@ Python (download netcdf)
     <pre>
 import xarray as xr
 import urllib.request
-url = "https://storage.googleapis.com/nmfs_odp_nwfsc/CB/nwm_daily_means/wr18/streamflow/netcdf/daily_mean_2018.nc"
+url = "https://storage.googleapis.com/nmfs_odp_nwfsc/CB/nwm_daily_means/wr1718/streamflow/netcdf/daily_mean_2018.nc"
 urllib.request.urlretrieve(url, "daily_mean_2018.nc")
 ds = xr.open_dataset("daily_mean_2018.nc")
 ds["streamflow"].isel(feature_id=1).plot()
@@ -134,7 +134,7 @@ ds["streamflow"].isel(feature_id=1).plot()
 R does not allow streaming data from the cloud. 
     <pre>
 library(ncdf4)
-url <- "https://storage.googleapis.com/nmfs_odp_nwfsc/CB/nwm_daily_means/wr18/streamflow/netcdf/daily_mean_2018.nc"
+url <- "https://storage.googleapis.com/nmfs_odp_nwfsc/CB/nwm_daily_means/wr1718/streamflow/netcdf/daily_mean_2018.nc"
 download.file(url, "daily_mean_2018.nc", mode = "wb")
 nc <- nc_open("daily_mean_2018.nc")
 time <- ncvar_get(nc, "time")
@@ -153,11 +153,11 @@ plot(time, streamflow)
 
       <p><strong>Browse bucket folders:</strong></p>
       <ul>
-        <li><a href="https://console.cloud.google.com/storage/browser/nmfs_odp_nwfsc/CB/nwm_daily_means/wr18/streamflow/netcdf">NetCDF files by year</a></li>
-        <li><a href="https://console.cloud.google.com/storage/browser/nmfs_odp_nwfsc/CB/nwm_daily_means/wr18/streamflow/zarr">Zarr format (cloud optimized)</a></li>
-        <li><a href="https://console.cloud.google.com/storage/browser/nmfs_odp_nwfsc/CB/nwm_daily_means/wr18/metadata">Metadata</a></li>
-        <li><a href="https://console.cloud.google.com/storage/browser/nmfs_odp_nwfsc/CB/nwm_daily_means/wr18/flowline">Flowlines parquet files</a></li>
-        <li><a href="https://console.cloud.google.com/storage/browser/nmfs_odp_nwfsc/CB/nwm_daily_means/wr18/notebooks">Sample notebooks</a></li>
+        <li><a href="https://console.cloud.google.com/storage/browser/nmfs_odp_nwfsc/CB/nwm_daily_means/wr1718/streamflow/netcdf">NetCDF files by year</a></li>
+        <li><a href="https://console.cloud.google.com/storage/browser/nmfs_odp_nwfsc/CB/nwm_daily_means/wr1718/streamflow/zarr">Zarr format (cloud optimized)</a></li>
+        <li><a href="https://console.cloud.google.com/storage/browser/nmfs_odp_nwfsc/CB/nwm_daily_means/wr1718/metadata">Metadata</a></li>
+        <li><a href="https://console.cloud.google.com/storage/browser/nmfs_odp_nwfsc/CB/nwm_daily_means/wr1718/flowline">Flowlines parquet files</a></li>
+        <li><a href="https://console.cloud.google.com/storage/browser/nmfs_odp_nwfsc/CB/nwm_daily_means/wr1718/notebooks">Sample notebooks</a></li>
       </ul>
 
 <h2><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg" alt="GitHub" width="24" style="vertical-align: middle; margin-right: 8px;">GitHub Repo</h2>

@@ -4,7 +4,10 @@ WR_18_NHD.*
 *.nc
 *.R
 HUC2-18/NHDFlowline.*
+HUC2-17/NHDFlowline.*
 netcdf/
 flowline/WR_18_Flowline.parquet
+flowline/WR_17_Flowline.parquet
+flowline/WR_1718_Flowline.parquet
 test.R
 metadata/*.parquet

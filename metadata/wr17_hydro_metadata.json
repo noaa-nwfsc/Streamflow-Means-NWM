@@ -1,0 +1,46 @@
+{
+  "title": "USGS WR17 Hydrology Data Package",
+  "description": "This dataset contains daily streamflow data and associated hydrologic features for USGS Water Resource Region 17 (WR17) by processing hourly streamflow data from the National Water Model v3.0  to daily for all associated COMID ids labelled StreamRiver for Region 17.",
+  "region": {
+    "name": "Water Resource Region 17",
+    "huc2": "17",
+    "states": ["Washington", "Oregon", "Idaho"],
+    "huc4s_included": ["1701", "1702", "1703", "1704", "1705", "1706", "1707", "1708", "1709", "1710", "1711", "1712"],
+    "huc4s_excluded": ["1606", "1712", "1003"],
+    "note": "Vector Processing Unit 17 included non-region 17 HUC4 subregions and these were excluded."
+  },
+  "flowlines": {
+    "source": "EPA NHDPlusV2.1, Vector Processing Unit 17",
+    "download_url": "https://www.epa.gov/waterdata/nhdplus-pacific-northwest-data-vector-processing-unit-17",
+    "original_file": "NHDPlusV21_PN_17_NHDSnapshot_08.7z",
+    "processed_file": "WR_17_Flowline.parquet",
+    "attributes_summary": {
+      "FTYPE": ["StreamRiver", "ArtificialPath", "CanalDitch", "Connector", "Pipeline"],
+      "FCODE": "See WR_17_metadata.parquet for full list",
+      "geometry_type": "LineString or MultiLineString",
+      "crs_original": "ESRI:102039 (USA_Contiguous_Albers_Equal_Area_Conic_USGS_version)",
+      "crs_parquet": "EPSG:3857 (Web Mercator)"
+    },
+    "geometry_cleaning": [
+      "Dropped empty or invalid geometries",
+      "Converted to 2D LineString (stripped Z/M if present)"
+    ]
+  },
+  "streamflow": {
+    "source_dataset": "NOAA National Water Model v3.0 Retrospective (1979–2023)",
+    "source_url": "https://registry.opendata.aws/nwm-archive/",
+    "zarr_path": "s3://noaa-nwm-retrospective-3-0-pds/CONUS/zarr/chrtout.zarr",
+    "filter": "FTYPE == 'StreamRiver'",
+    "subset_method": "Match COMID from Region 18 Flowline metadata with feature_id in the National Water Model v3.0 output.",
+    "processing": "Resampled to daily mean using xarray",
+    "code_snippet": "daily_mean = streamflow_ts.resample(time='1D').mean().compute()",
+    "output_format": "NetCDF + Zarr",
+    "storage_access": {
+      "type": "S3",
+      "anonymous": true,
+      "region": "us-east-1"
+    }
+  },
+  "processing_date": "2025-03-28",
+  "author": "Eli Holmes, NOAA Fisheries, eli.holmes@noaa.gov"
+}
